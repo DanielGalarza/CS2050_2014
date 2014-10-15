@@ -1,0 +1,117 @@
+/*
+ * This Program contains methods to solve different problems recursively.
+ */
+
+import java.text.DecimalFormat;
+import java.util.*;
+
+/**
+ * Computer Science 2050
+ * October 3, 2014
+ * @author Daniel Galarza
+ */
+public class RecursionProg {
+    static Scanner keyboard = new Scanner(System.in);   // Input from keyboard. 
+    DecimalFormat fmt = new DecimalFormat("0.0000");    // format for sum.
+    private int recursionNum = 0;                      // storage for keyboard input.  
+    private int num1, num2, num3;                  // storage for keyboard input.
+    private double num;                            // place holder for sum. 
+
+    public static void main(String [] args) throws Exception {
+        RecursionProg r = new RecursionProg();
+    }
+    ///////////////////// Object stuff below ////////////////////////////
+    
+    /**
+     * Constructor.
+     * @throws Exception 
+     */
+    public RecursionProg() throws Exception {
+        Start();
+    }
+    /**
+     * Calculates the sum recursively in the following order, 
+     * 1+(1/2)-(1/3)+(1/4)-(1/5) etc.
+     * 
+     * @param k     an integer value from the user input.
+     * @return      the sum as double.
+     * @throws      Exception 
+     */
+    public double recursionOne(int k) throws Exception {
+        if(k == 0) { 
+            return 0;
+        } else if(k == 1) {
+            return 1.0;
+        } else if(k %2 == 0) { 
+            return ((1.0/k) + recursionOne(k-1));
+        } else {
+            return ((-1.0/k) + recursionOne(k-1));
+        } 
+    }
+    /**
+     * Method that tests whether a phrase is a palindrome.
+     * 
+     * @param pal   String from the user input keyboard.
+     * @return      returns true if a palindrome or false if not a palindrome. 
+     */
+    public boolean Palindrome(String pal) {
+        if(pal.length() == 0 || pal.length() == 1) 
+            return true;
+      
+        if(pal.charAt(0) == pal.charAt(pal.length()-1))
+            return Palindrome(pal.substring(1, pal.length()-1));
+        else 
+            return false;
+    }
+    /**
+     * Method that returns the greatest common denominator of two integers.
+     * 
+     * @param n     first integer from the user keyboard. 
+     * @param m     Second integer from the user keyboard.
+     * @return      returns the greatest common denominator.
+     */
+    public int GCD(int n, int m) {
+          if (m == 0) 
+              return n;
+          else
+              return GCD(m, n % m);
+    }
+    
+    public void Start() throws Exception {
+        System.out.print("Please choose a method: Type Command (a, b, c, d): ");
+	String cmd = keyboard.nextLine();
+        
+                switch (cmd.charAt(0)) {     
+                    case 'a':   System.out.println("Enter a number");
+                                recursionNum = keyboard.nextInt();
+                                num = recursionOne(recursionNum);
+                                System.out.println("The sum is " + fmt.format(num)); 
+                                break;
+                        
+                    case 'b':   System.out.println("Enter a word or phrase to check if "
+                                                    + "it is a palindrome");
+                                String s1 = keyboard.nextLine();
+                                System.out.println(Palindrome(s1));
+                                if(Palindrome(s1))
+                                    System.out.println("Is a palinrome");
+                                else
+                                    System.out.println("Not a palindrome");
+                                break;
+                        
+                    case 'c':   System.out.println("Type in a number: ");
+                                num1 = keyboard.nextInt();
+                                System.out.println("Type in a second number: ");
+                                num2 = keyboard.nextInt();
+                                num3 = GCD(num1, num2);
+                                System.out.println("The Greatest Common Denominator: " + num3);
+                                break;
+                        
+                    case 'd':   System.out.println("End");
+                                break;
+                        
+                    default :   System.out.println("Not a command dunmmy");
+                                Start();
+                                break;
+                }   
+    }
+}
