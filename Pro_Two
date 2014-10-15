@@ -1,0 +1,184 @@
+/*
+ *  Daniel Galarza
+ *  Program #2
+ *  CS 2050, TR @10am. 
+ *  
+ * This program creates a Graphic User Interface with radio buttons, a text field, 
+ * and a slider. the radio buttons change the color of the JFrame and all of its inner
+ * JPanels. The radio buttons are labeled with the name of the color, and the value of the
+ * text field and the value of the slider change, simultaneously. The slider's value 
+ * range is from the year 1990 to 2014.
+ *
+ *
+ */
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.event.*;
+
+
+public class ProTwo extends JPanel implements ChangeListener, ActionListener
+{   // The bounds for the frame and the
+    public static final int WIDTH_1 = 300, HEIGHT_1 = 150, 
+    WIDTH_2 = 500, HEIGHT_2 = 600, TEXT_WIDTH = 6, FIRST_YEAR = 1990,
+    LAST_YEAR = 2014, INIT_YEAR = 2002;
+
+    public static void main(String[] args)
+    {   ProTwo t = new ProTwo();
+    }
+    
+/************************ OBJECT STUFF BELOW *****************************/  
+
+    JFrame frame;                       // The frame.
+    JTextField text;                     // text field
+    JSlider slider;                     // the slider
+    JPanel panel, southGuy, buttonPanel, framePanel;    
+    
+    // names of the buttons
+    String magentaString = "Magenta";
+    String cyanString = "Cyan";
+    String blueString = "Blue";
+    String greenString = "Green";
+    
+    public ProTwo()
+    {   this.frame = new JFrame("Program #2");  // title to the frame
+
+        panel = new JPanel();
+        panel.add(new JLabel("year"));
+
+        // the text field
+        text = new JTextField(TEXT_WIDTH);
+        text.setHorizontalAlignment(JTextField.RIGHT);
+        panel.add(text);
+        
+        // Listener for the text field. 
+        text.addActionListener(
+			new ActionListener() 
+                        {   public void actionPerformed(ActionEvent e) 
+                            {   String str = text.getText();
+                                slider.setValue(Integer.parseInt(str));      
+                            }
+                        });
+       
+        // The slider in order to choose a year.
+        slider = new JSlider(JSlider.VERTICAL, FIRST_YEAR,LAST_YEAR, INIT_YEAR);
+        slider.addChangeListener(this);
+        slider.setMajorTickSpacing(4);
+        slider.setMinorTickSpacing(1);
+        slider.setPaintTicks(true);
+        slider.setPaintLabels(true);
+        slider.setSnapToTicks(true); 
+        
+        // Panel to hold the slider
+        southGuy = new JPanel(new GridLayout(1,2));
+        JPanel panel2 = new JPanel();
+        southGuy.add(new JLabel("Choose Year"));
+        southGuy.add(slider);
+        panel2.add(southGuy);
+        
+        // Button to change the color(magenta) of the frame.
+        JRadioButton magentaButton = new JRadioButton(magentaString);
+        magentaButton.setMnemonic(KeyEvent.VK_M);
+        magentaButton.setActionCommand(magentaString);
+        magentaButton.setSelected(true);
+        
+        // Button to change the color(cyan) of the frame.
+        JRadioButton cyanButton = new JRadioButton(cyanString);
+        cyanButton.setMnemonic(KeyEvent.VK_C);
+        cyanButton.setActionCommand(cyanString);
+  
+        // Button to change the color(blue) of the frame.
+        JRadioButton blueButton = new JRadioButton(blueString);
+        blueButton.setMnemonic(KeyEvent.VK_B);
+        //blueButton.setActionCommand(blueString);
+
+        // Button to change the color(green) of the frame.
+        JRadioButton greenButton = new JRadioButton(greenString);
+        greenButton.setMnemonic(KeyEvent.VK_G);
+        greenButton.setActionCommand(greenString);
+       
+        // groups the buttons 
+        ButtonGroup group = new ButtonGroup();
+        group.add(magentaButton);
+        group.add(cyanButton);
+        group.add(blueButton);
+        group.add(greenButton); 
+        
+        // Listener for magenta buttons
+        magentaButton.addActionListener(
+                    new ActionListener() 
+                    {   public void actionPerformed(ActionEvent e) 
+                        {   framePanel.setBackground(Color.MAGENTA);
+                            panel.setBackground(Color.MAGENTA);
+                            southGuy.setBackground(Color.MAGENTA);
+                            buttonPanel.setBackground(Color.MAGENTA);
+                        }
+                    });
+        
+        // Listener for cyan button
+        cyanButton.addActionListener(
+                    new ActionListener() 
+                    {   public void actionPerformed(ActionEvent e) 
+                        {   framePanel.setBackground(Color.CYAN);
+                            panel.setBackground(Color.CYAN);
+                            southGuy.setBackground(Color.CYAN);
+                            buttonPanel.setBackground(Color.CYAN);
+                        }
+                    });
+        
+        // Listener for blue button              
+        blueButton.addActionListener(
+                    new ActionListener() 
+                    {   public void actionPerformed(ActionEvent e) 
+                        {   framePanel.setBackground(Color.BLUE);
+                            panel.setBackground(Color.BLUE);
+                            southGuy.setBackground(Color.BLUE);
+                            buttonPanel.setBackground(Color.BLUE);
+                        }
+                    });
+        
+        // Listener for green button               
+        greenButton.addActionListener(
+                    new ActionListener() 
+                    {   public void actionPerformed(ActionEvent e) 
+                        {   framePanel.setBackground(Color.GREEN);
+                            panel.setBackground(Color.GREEN);
+                            southGuy.setBackground(Color.GREEN);
+                            buttonPanel.setBackground(Color.GREEN);
+                        }
+                    });
+                        
+        
+        // Panel for the radio buttons
+        buttonPanel = new JPanel(new GridLayout(0, 1));
+        buttonPanel.add(magentaButton);
+        buttonPanel.add(cyanButton);
+        buttonPanel.add(blueButton);
+        buttonPanel.add(greenButton);
+        
+        // Placing all panels into one panel
+        framePanel = new JPanel(new GridLayout(2,1,3,0));
+        framePanel.add(panel);
+        framePanel.add(buttonPanel);
+        framePanel.add(southGuy);
+     
+        // Setting all of the contents into the frame
+        frame.add(framePanel, BorderLayout.CENTER );
+        frame.setBounds(WIDTH_1, HEIGHT_1, WIDTH_2, HEIGHT_2);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	      frame.setVisible(true); 
+  
+    }
+    
+    // changes the value of the text field to the current value of the slider.
+    public void stateChanged(ChangeEvent e)
+    {   text.setText(String.valueOf(slider.getValue()));  
+    }
+    
+    public void actionPerformed(ActionEvent e)
+    {
+    }
+   
+}
+
